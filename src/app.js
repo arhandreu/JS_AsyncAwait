@@ -4,7 +4,15 @@ import json from './parser';
 export class GameSavingLoader {
   static async load() {
     try {
-      return await json(await read());
+      const data = await json(await read());
+      return new Promise((resolve, reject) => {
+        const loader = new GameSavingLoader();
+        const dataJson = JSON.parse(data);
+        for (const key in dataJson) {
+          loader[key] = dataJson[key];
+        }
+        resolve(loader);
+      })
     } catch (error) {
       return error;
     }
@@ -13,5 +21,5 @@ export class GameSavingLoader {
 
 (async () => {
   const data = await GameSavingLoader.load();
-  console.log(JSON.parse(data));
+  console.log(data);
 })();

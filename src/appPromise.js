@@ -1,14 +1,24 @@
+import { Promise } from 'core-js';
 import read from './reader';
 import json from './parser';
 
 export class GameSavingLoader {
   static load() {
-    return read().then((data) => json(data));
+    return new Promise((resolve, reject) => {
+      read().then((dataRead) => json(dataRead)).then((data) => {
+        const loader = new GameSavingLoader();
+        const dataJson = JSON.parse(data);
+        for (const key in dataJson) {
+          loader[key] = dataJson[key];
+        }
+        resolve(loader);
+      });
+    });
   }
 }
 
 GameSavingLoader.load().then((saving) => {
-  console.log(JSON.parse(saving));
+  console.log(saving instanceof GameSavingLoader);
 }, (error) => {
   console.log(error);
 });
