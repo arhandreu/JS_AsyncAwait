@@ -5,7 +5,7 @@ export class GameSavingLoader {
   static async load() {
     try {
       const data = await json(await read());
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {        
         const loader = new GameSavingLoader();
         const dataJson = JSON.parse(data);
         for (const key in dataJson) {
@@ -14,12 +14,7 @@ export class GameSavingLoader {
         resolve(loader);
       })
     } catch (error) {
-      return error;
+      console.log(error);
     }
   }
 }
-
-(async () => {
-  const data = await GameSavingLoader.load();
-  console.log(data);
-})();

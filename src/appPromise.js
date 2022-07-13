@@ -16,9 +16,3 @@ export class GameSavingLoader {
     });
   }
 }
-
-GameSavingLoader.load().then((saving) => {
-  console.log(saving instanceof GameSavingLoader);
-}, (error) => {
-  console.log(error);
-});
